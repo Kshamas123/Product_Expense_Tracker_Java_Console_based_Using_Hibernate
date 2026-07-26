@@ -23,4 +23,18 @@ public class Helper {
 	        return choice;
 		}
 	}
+	public static boolean promptToContinue(Scanner sc) {
+        System.out.println("Press 1 to try again or 0 to exit:");
+        while (true) {
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                sc.nextLine();
+                if (choice == 1) return true;
+                if (choice == 0) return false;
+            } else {
+                sc.next(); 
+            }
+            System.out.println("Please enter 1 or 0.");
+        }
+    }
 }

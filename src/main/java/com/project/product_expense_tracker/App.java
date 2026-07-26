@@ -21,8 +21,8 @@ public class App {
     	  {
     	  case 1:System.out.println("Login feature coming soon");
     	         break;
-    	  case 2:System.out.println("Signup feature coming soon");
-	         break;
+    	  case 2:ObjectManager.getAuthController().signUp(sc);
+    	         break;
     	  case 0:
               System.out.println("Closing the Application");
               return;
