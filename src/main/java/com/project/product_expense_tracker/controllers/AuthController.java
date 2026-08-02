@@ -3,6 +3,7 @@ package com.project.product_expense_tracker.controllers;
 import java.util.Scanner;
 
 import com.project.product_expense_tracker.Helper;
+import com.project.product_expense_tracker.exceptions.EmptyFieldException;
 import com.project.product_expense_tracker.models.User;
 import com.project.product_expense_tracker.services.AuthService;
 
@@ -23,16 +24,25 @@ public class AuthController {
     		String userPassword=sc.nextLine();
     		System.out.println("Enter your Email");
     		String userEmail=sc.nextLine();
-    		User user=authService.validateUserData(userName,userPassword,userEmail);
-    		if(user != null)
-    		{
-    			System.out.println("User created SUCCESSFULLY");
-    			return user;
+    		try {
+    			User user=authService.validateUserData(userName,userPassword,userEmail);
+        		if(user != null)
+        		{
+        			System.out.println("User created SUCCESSFULLY");
+        			return user;
+        		}
     		}
-    		else
+    		catch(EmptyFieldException e)
     		{
-    		  if(!Helper.promptToContinue(sc))
-    			 break; 
+    			System.out.println(e.getMessage());
+    		}
+    		catch(Exception e)
+    		{
+    			System.out.println(e.getMessage());
+    		}
+    		if(!Helper.promptToContinue(sc))
+    		{
+    			break;
     		}
     	}
     	return null;
