@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 
 import org.hibernate.SessionFactory;
 
+import com.project.product_expense_tracker.dao.UserDAO;
+import com.project.product_expense_tracker.exceptions.DuplicateEmailException;
 import com.project.product_expense_tracker.exceptions.EmptyFieldException;
 import com.project.product_expense_tracker.exceptions.InvalidEmailException;
 import com.project.product_expense_tracker.exceptions.InvalidPassswordException;
@@ -17,13 +19,15 @@ public class AuthService {
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
     
     private SessionFactory sessionFactory;
+    private UserDAO userdao;
     
-    public AuthService(SessionFactory sessionFactory)
+    public AuthService(SessionFactory sessionFactory,UserDAO userdao)
     {
     	this.sessionFactory=sessionFactory;
+    	this.userdao=userdao;
     }
     
-    public User registerUser(String userName, String userPassword, String userEmail) throws EmptyFieldException,InvalidEmailException,InvalidPassswordException{
+    public User registerUser(String userName, String userPassword, String userEmail) throws EmptyFieldException,InvalidEmailException,InvalidPassswordException, DuplicateEmailException{
     	if(!areFieldsValid(userName,userPassword,userEmail))
     	{
     		throw new EmptyFieldException("username, userpassword or useremail cannot be empty");
@@ -36,6 +40,8 @@ public class AuthService {
     		throw new InvalidPassswordException("Password should have atleast 8 character, it should include atleast 1 uppercase ,1 lowercase, 1 digit , 1 special character no space is allowed ");
     	}
     	
+    	if(! userdao.existsByEmail(userEmail, sessionFactory))
+    		throw new DuplicateEmailException("Email is already registered. Please login or use a different email.");
     	return null;
     }
     
