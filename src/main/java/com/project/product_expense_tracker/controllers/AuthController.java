@@ -25,21 +25,18 @@ public class AuthController {
     		System.out.println("Enter your Email");
     		String userEmail=sc.nextLine();
     		try {
-    			User user=authService.validateUserData(userName,userPassword,userEmail);
+    			User user=authService.registerUser(userName,userPassword,userEmail);
         		if(user != null)
         		{
         			System.out.println("User created SUCCESSFULLY");
         			return user;
         		}
     		}
-    		catch(EmptyFieldException e)
-    		{
-    			System.out.println(e.getMessage());
-    		}
     		catch(Exception e)
     		{
     			System.out.println(e.getMessage());
     		}
+    		
     		if(!Helper.promptToContinue(sc))
     		{
     			break;
