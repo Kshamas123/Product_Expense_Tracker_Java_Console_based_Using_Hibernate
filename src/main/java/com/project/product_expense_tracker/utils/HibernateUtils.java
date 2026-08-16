@@ -13,6 +13,11 @@ public class HibernateUtils {
     static {
     	Configuration cfg=new Configuration();
     	cfg.setProperty(
+    		    "hibernate.connection.url",
+    		    System.getenv("DB_URL")
+    		);
+    	
+    	cfg.setProperty(
     		    "hibernate.connection.username",
     		    System.getenv("DB_USERNAME")
     		);
